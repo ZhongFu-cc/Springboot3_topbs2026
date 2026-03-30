@@ -136,6 +136,10 @@ public class AttendeesTagServiceImpl extends ServiceImpl<AttendeesTagMapper, Att
 		// 3. 收集所有 tagId，獲取map中所有value,兩層List(Collection<List<Long>>)要拆開
 		Set<Long> allTagIds = attendeesIdToTagIds.values().stream().flatMap(List::stream).collect(Collectors.toSet());
 
+		if (allTagIds.isEmpty()) {
+			// 如果沒有任何tagId，直接返回一個空的Map
+			return Collections.emptyMap();
+		}
 		// 4. 批量查詢所有 Tag，並組成映射關係tagId:Tag
 		Map<Long, Tag> tagMap = tagMapper.selectBatchIds(allTagIds)
 				.stream()
