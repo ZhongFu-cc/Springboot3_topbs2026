@@ -36,7 +36,6 @@ import tw.org.topbs.mapper.MemberMapper;
 import tw.org.topbs.pojo.DTO.AddGroupMemberDTO;
 import tw.org.topbs.pojo.DTO.AddMemberForAdminDTO;
 import tw.org.topbs.pojo.DTO.MemberEmailLogin;
-import tw.org.topbs.pojo.DTO.MemberIdCardLogin;
 import tw.org.topbs.pojo.DTO.MemberLoginDTO;
 import tw.org.topbs.pojo.DTO.WalkInRegistrationDTO;
 import tw.org.topbs.pojo.DTO.addEntityDTO.AddMemberDTO;
@@ -511,24 +510,6 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 		LambdaQueryWrapper<Member> memberQueryWrapper = new LambdaQueryWrapper<>();
 		memberQueryWrapper.eq(Member::getEmail, memberLoginInfo.getEmail())
 				.eq(Member::getPassword, memberLoginInfo.getPassword());
-
-		Member member = baseMapper.selectOne(memberQueryWrapper);
-
-		if (member != null) {
-			return this.returnSaTokenInfo(member);
-		}
-
-		// 如果 member為null , 則直接拋出異常
-		throw new AccountPasswordWrongException(messageHelper.get(I18nMessageKey.Registration.Auth.WRONG_ACCOUNT));
-
-	}
-
-	@Override
-	public SaTokenInfo login(MemberIdCardLogin memberIdCardLogin) {
-		// 透過idCard 和 password 查詢Member資訊
-		LambdaQueryWrapper<Member> memberQueryWrapper = new LambdaQueryWrapper<>();
-		memberQueryWrapper.eq(Member::getIdCard, memberIdCardLogin.getIdCard())
-				.eq(Member::getPassword, memberIdCardLogin.getPassword());
 
 		Member member = baseMapper.selectOne(memberQueryWrapper);
 

@@ -12,7 +12,6 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import tw.org.topbs.pojo.DTO.AddGroupMemberDTO;
 import tw.org.topbs.pojo.DTO.AddMemberForAdminDTO;
 import tw.org.topbs.pojo.DTO.MemberEmailLogin;
-import tw.org.topbs.pojo.DTO.MemberIdCardLogin;
 import tw.org.topbs.pojo.DTO.MemberLoginDTO;
 import tw.org.topbs.pojo.DTO.WalkInRegistrationDTO;
 import tw.org.topbs.pojo.DTO.addEntityDTO.AddMemberDTO;
@@ -189,14 +188,6 @@ public interface MemberService extends IService<Member> {
 	 */
 	SaTokenInfo login(MemberEmailLogin memberEmailLogin);
 	
-	/**
-	 * 會員登入 - IdCard & Password
-	 * 
-	 * @param memberIdCardLogin
-	 * @return
-	 */
-	SaTokenInfo login(MemberIdCardLogin memberIdCardLogin);
-
 	/**
 	 * 「外國人」登入 - Email & Password 綁定國籍「非」台灣 
 	 * 
