@@ -6,7 +6,6 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import lombok.RequiredArgsConstructor;
 import tw.org.topbs.pojo.DTO.EmailBodyContent;
 import tw.org.topbs.pojo.DTO.MemberEmailLogin;
-import tw.org.topbs.pojo.DTO.MemberIdCardLogin;
 import tw.org.topbs.pojo.DTO.MemberLoginDTO;
 import tw.org.topbs.pojo.entity.Member;
 import tw.org.topbs.service.AsyncService;
@@ -29,16 +28,6 @@ public class MemberAuthManager {
 	 */
 	public SaTokenInfo login(MemberEmailLogin memberEmailLogin) {
 		return memberService.login(memberEmailLogin);
-	}
-	
-	/**
-	 * 會員登入 - IdCard & Password
-	 * 
-	 * @param memberIdCardLogin
-	 * @return
-	 */
-	public SaTokenInfo login(MemberIdCardLogin memberIdCardLogin) {
-		return memberService.login(memberIdCardLogin);
 	}
 	
 	/**
