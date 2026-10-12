@@ -457,6 +457,8 @@ public class MemberController {
 
 		// 1.獲取token 對應會員資料
 		Member memberInfo = memberAuthManager.getMemberInfo();
+		
+		System.out.println("跑invoice 產出");
 
 		// 2.將會員ID 及 響應Servlet給Manager 由它創建參加證明
 		memberManager.generateConferenceInvoice(response, memberInfo.getMemberId());
