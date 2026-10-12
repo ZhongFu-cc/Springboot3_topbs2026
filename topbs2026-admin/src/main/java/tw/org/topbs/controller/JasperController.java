@@ -616,4 +616,50 @@ public class JasperController {
 	//
 	//	}
 
+	/**
+	 * 最簡單的 Invoice 測試,寫死資料、不查DB、不需登入
+	 * 直接用瀏覽器開 /jasper/simple_invoice 即可預覽 PDF
+	 *
+	 * @param response
+	 * @throws IOException
+	 * @throws JRException
+	 */
+	@GetMapping("simple_invoice")
+	public void generateSimpleInvoice(HttpServletResponse response) throws IOException, JRException {
+
+		try (InputStream mainInputStream = new ClassPathResource("jasperTemplate/conference_invoice.jasper")
+				.getInputStream();
+				InputStream subReportInputStream = new ClassPathResource("jasperTemplate/orderItems.jasper")
+						.getInputStream();
+				InputStream bgInputStream = new ClassPathResource("jasperTemplate/conference_invoice.jpg")
+						.getInputStream()) {
+
+			// 1.寫死的測試資料
+			Map<String, Object> parameters = new HashMap<>();
+			parameters.put("finalName", "Test User");
+			parameters.put("eventDate", "November 15 ,2025");
+			parameters.put("sequenceNo", "001");
+			parameters.put("totalAmount", new BigDecimal("300.00"));
+			parameters.put("contactEmail", "test@example.com");
+//			parameters.put("bg", bgInputStream);
+			parameters.put("subReport", subReportInputStream);
+
+			// 2.子報表只放一筆訂單
+			Orders order = new Orders();
+			order.setItemsSummary("Registration Fee");
+			order.setTotalAmount(new BigDecimal("300.00"));
+			parameters.put("orderItems", List.of(order));
+
+			// 3.先產生到記憶體,失敗會直接拋錯,不會回傳空檔
+			JasperPrint print = JasperFillManager.fillReport(mainInputStream, parameters, new JREmptyDataSource());
+			byte[] pdfBytes = JasperExportManager.exportReportToPdf(print);
+
+			// 4.設定為PDF再輸出,瀏覽器 / Postman 才會當成 PDF 顯示
+			response.setContentType("application/pdf");
+			response.setHeader("Content-Disposition", "inline; filename=\"simple_invoice.pdf\"");
+			response.setContentLength(pdfBytes.length);
+			response.getOutputStream().write(pdfBytes);
+		}
+	}
+
 }
