@@ -658,6 +658,11 @@ public class PaperManager {
 		// 2.透過paperFileUploadId 刪除第二階段檔案 (DB 和 Minio)
 		paperFileUploadService.removeSecondStagePaperFile(paperId, paperFileUploadId);
 
+		// 如果還有其他第二階段檔案, 代表仍有繳交, 不需要新增未繳交 tag
+		if (!paperFileUploadService.getSecondStagePaperFilesByPaperId(paperId).isEmpty()) {
+			return;
+		}
+
 		// 3. 移除檔案但它仍是Accpted的稿件,所以要拿到它的groupIndex,為了之後分配tag使用
 		int groupIndex = paperService.getPaperGroupIndexByStatus(GROUP_SIZE, PaperStatusEnum.ACCEPTED.getValue());
 
