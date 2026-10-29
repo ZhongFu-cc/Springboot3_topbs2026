@@ -85,6 +85,7 @@ public class MemberManager {
 	 */
 	public void generateCertificate(HttpServletResponse response, Long memberId) throws IOException {
 
+
 		// 1.查詢會員是否是與會者的資格
 		Attendees attendees = attendeesService.getAttendeesByMemberId(memberId);
 		if (attendees == null) {
@@ -96,6 +97,9 @@ public class MemberManager {
 		if (checkinRecordCount < 1) {
 			throw new CheckinRecordException("與會者沒有簽到記錄，不發參加證明");
 		}
+		
+		response.setContentType("application/pdf");
+		response.setHeader("Content-Disposition", "attachment; filename=\"certificate.pdf\"");
 
 		// 3.引入certificate(參加證明)  Jasper文件(模板)
 		Resource resource = new ClassPathResource(CERTIFICATE_TEMPLATE_PATH);
