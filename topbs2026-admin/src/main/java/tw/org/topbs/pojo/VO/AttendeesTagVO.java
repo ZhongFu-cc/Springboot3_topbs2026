@@ -20,6 +20,9 @@ public class AttendeesTagVO {
 	@Schema(description = "參與者流水序號")
 	private Integer sequenceNo;
 
+	@Schema(description = "收據編號,客戶需要再透過excel模板批量匯入")
+	private String receiptNo;
+
 	@Schema(description = "會員資訊")
 	private Member member;
 
